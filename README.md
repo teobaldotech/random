@@ -1,5 +1,5 @@
 Titulo do projeto
-random aleatório
+random em c
 
 Funcionalidades
 tem a funçao de gerar números aleatórios não repetidos.
