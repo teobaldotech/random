@@ -1,16 +1,8 @@
-# randomico
-//random aleatório
+Titulo do projeto
+random aleatório
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-int main(){
+Funcionalidades
+tem a funçao de gerar números aleatórios não repetidos.
 
- int i, aleatorio;
- srand (time ( NULL));
-for (i = 0 ;i < 30 ; i++){
-    aleatorio = rand() %100 ;
-    printf("% d", aleatorio);
-}
-    return 0;
-}
+requisitos minimos para intalação
+editor de texto vs code.
