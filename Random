@@ -1,16 +1,52 @@
-# randomico
-//random aleatório
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Sorteio de Números</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      margin: 5px;
+    }
+    #resultado {
+      margin-top: 20px;
+      font-size: 24px;
+      color: #2980b9;
+    }
+  </style>
+</head>
+<body>
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-int main(){
+  <h1>🔢 Sorteio de Números</h1>
+  <p>Escolha o intervalo e clique para sortear:</p>
 
- int i, aleatorio;
- srand (time ( NULL));
-for (i = 0 ;i < 30 ; i++){
-    aleatorio = rand() %100 ;
-    printf("% d", aleatorio);
-}
-    return 0;
-}
+  <input type="number" id="min" placeholder="Mínimo" value="1">
+  <input type="number" id="max" placeholder="Máximo" value="100">
+  <br>
+  <button onclick="sortearNumero()">Sortear</button>
+
+  <div id="resultado"></div>
+
+  <script>
+    function sortearNumero() {
+      const min = parseInt(document.getElementById("min").value);
+      const max = parseInt(document.getElementById("max").value);
+
+      if (isNaN(min) || isNaN(max) || min >= max) {
+        document.getElementById("resultado").textContent = "⚠️ Intervalo inválido!";
+        return;
+      }
+
+      const numero = Math.floor(Math.random() * (max - min + 1)) + min;
+      document.getElementById("resultado").textContent = `Número sorteado: ${numero}`;
+    }
+  </script>
+
+</body>
+</html>
