@@ -1,52 +1,399 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Sorteio de Números</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 50px;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>🎲 Sorteador Neon Pro</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Segoe UI',sans-serif;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+    overflow:hidden;
+
+    background:linear-gradient(
+        -45deg,
+        #0f172a,
+        #1e3a8a,
+        #0f766e,
+        #7c3aed
+    );
+
+    background-size:400% 400%;
+    animation:bgMove 12s ease infinite;
+}
+
+@keyframes bgMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+.container{
+    width:100%;
+    max-width:600px;
+
+    background:rgba(255,255,255,0.08);
+    backdrop-filter:blur(20px);
+
+    border:1px solid rgba(255,255,255,0.15);
+
+    border-radius:30px;
+
+    padding:35px;
+
+    text-align:center;
+
+    box-shadow:
+        0 0 30px rgba(0,255,255,.25),
+        0 0 60px rgba(0,255,255,.12);
+}
+
+h1{
+    color:white;
+    margin-bottom:20px;
+    font-size:2.2rem;
+
+    text-shadow:
+    0 0 10px cyan,
+    0 0 20px cyan;
+}
+
+.subtitulo{
+    color:#ddd;
+    margin-bottom:25px;
+}
+
+.inputs{
+    display:flex;
+    justify-content:center;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+input{
+    width:130px;
+
+    padding:14px;
+
+    border:none;
+    border-radius:15px;
+
+    background:rgba(255,255,255,.12);
+
+    color:white;
+
+    font-size:18px;
+    text-align:center;
+
+    outline:none;
+}
+
+input::placeholder{
+    color:#ccc;
+}
+
+.botoes{
+    margin-top:20px;
+}
+
+button{
+    padding:14px 24px;
+    margin:5px;
+
+    border:none;
+    border-radius:18px;
+
+    cursor:pointer;
+
+    font-size:16px;
+    font-weight:bold;
+
+    transition:.3s;
+}
+
+.btn-sortear{
+    background:linear-gradient(
+    45deg,
+    #00e5ff,
+    #00ff88
+    );
+
+    color:black;
+}
+
+.btn-sortear:hover{
+    transform:translateY(-3px) scale(1.05);
+
+    box-shadow:
+    0 0 20px #00e5ff,
+    0 0 40px #00ff88;
+}
+
+.btn-limpar{
+    background:linear-gradient(
+    45deg,
+    #ff416c,
+    #ff4b2b
+    );
+
+    color:white;
+}
+
+.btn-limpar:hover{
+    transform:translateY(-3px) scale(1.05);
+
+    box-shadow:
+    0 0 20px #ff416c;
+}
+
+#resultado{
+    margin-top:30px;
+
+    font-size:6rem;
+    font-weight:bold;
+
+    color:white;
+
+    min-height:100px;
+
+    text-shadow:
+    0 0 15px #00e5ff,
+    0 0 30px #00e5ff,
+    0 0 60px #00e5ff;
+}
+
+.pulse{
+    animation:pulse .8s infinite;
+}
+
+@keyframes pulse{
+    0%,100%{
+        transform:scale(1);
     }
-    input, button {
-      padding: 10px;
-      font-size: 16px;
-      margin: 5px;
+
+    50%{
+        transform:scale(1.1);
     }
-    #resultado {
-      margin-top: 20px;
-      font-size: 24px;
-      color: #2980b9;
-    }
-  </style>
+}
+
+.info{
+    margin-top:15px;
+    color:#ddd;
+    font-size:18px;
+}
+
+#historico{
+    margin-top:25px;
+
+    max-height:220px;
+    overflow-y:auto;
+
+    text-align:left;
+}
+
+.card{
+    background:rgba(255,255,255,.08);
+
+    border-left:4px solid #00e5ff;
+
+    padding:12px;
+    margin-bottom:10px;
+
+    border-radius:12px;
+
+    color:white;
+
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateX(5px);
+    background:rgba(255,255,255,.15);
+}
+
+::-webkit-scrollbar{
+    width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#00e5ff;
+    border-radius:10px;
+}
+
+.footer{
+    margin-top:20px;
+    color:#bbb;
+    font-size:14px;
+}
+
+</style>
 </head>
+
 <body>
 
-  <h1>🔢 Sorteio de Números</h1>
-  <p>Escolha o intervalo e clique para sortear:</p>
+<div class="container">
 
-  <input type="number" id="min" placeholder="Mínimo" value="1">
-  <input type="number" id="max" placeholder="Máximo" value="100">
-  <br>
-  <button onclick="sortearNumero()">Sortear</button>
+<h1>🎲 Sorteador Neon Pro</h1>
 
-  <div id="resultado"></div>
+<p class="subtitulo">
+Escolha um intervalo e sorteie números aleatórios
+</p>
 
-  <script>
-    function sortearNumero() {
-      const min = parseInt(document.getElementById("min").value);
-      const max = parseInt(document.getElementById("max").value);
+<div class="inputs">
+    <input type="number" id="min" value="1">
+    <input type="number" id="max" value="100">
+</div>
 
-      if (isNaN(min) || isNaN(max) || min >= max) {
-        document.getElementById("resultado").textContent = "⚠️ Intervalo inválido!";
+<div class="botoes">
+
+<button
+class="btn-sortear"
+onclick="sortearNumero()">
+🎯 Sortear
+</button>
+
+<button
+class="btn-limpar"
+onclick="limparHistorico()">
+🗑 Limpar
+</button>
+
+</div>
+
+<div id="resultado">?</div>
+
+<div class="info">
+Sorteios realizados:
+<b id="contador">0</b>
+</div>
+
+<div id="historico"></div>
+
+<div class="footer">
+✨ Versão Neon Glassmorphism
+</div>
+
+</div>
+
+<script>
+
+let historico = [];
+let contador = 0;
+
+function sortearNumero(){
+
+    const min =
+    parseInt(
+    document.getElementById("min").value);
+
+    const max =
+    parseInt(
+    document.getElementById("max").value);
+
+    if(
+        isNaN(min) ||
+        isNaN(max) ||
+        min >= max
+    ){
+
+        document.getElementById("resultado")
+        .innerHTML = "⚠️";
+
         return;
-      }
-
-      const numero = Math.floor(Math.random() * (max - min + 1)) + min;
-      document.getElementById("resultado").textContent = `Número sorteado: ${numero}`;
     }
-  </script>
+
+    const resultado =
+    document.getElementById("resultado");
+
+    resultado.classList.add("pulse");
+
+    let frames = 0;
+
+    const animacao =
+    setInterval(()=>{
+
+        resultado.textContent =
+        Math.floor(
+        Math.random() *
+        (max-min+1)
+        ) + min;
+
+        frames++;
+
+        if(frames >= 20){
+
+            clearInterval(animacao);
+
+            const numero =
+            Math.floor(
+            Math.random() *
+            (max-min+1)
+            ) + min;
+
+            resultado.textContent = numero;
+
+            resultado.classList.remove("pulse");
+
+            contador++;
+
+            document.getElementById("contador")
+            .textContent = contador;
+
+            historico.unshift(numero);
+
+            atualizarHistorico();
+        }
+
+    },70);
+}
+
+function atualizarHistorico(){
+
+    const lista =
+    document.getElementById("historico");
+
+    lista.innerHTML =
+    "<h3 style='color:white;margin-bottom:10px;'>📜 Histórico</h3>";
+
+    historico.forEach((num,index)=>{
+
+        lista.innerHTML += `
+        <div class="card">
+            🎲 Sorteio ${index+1}: <b>${num}</b>
+        </div>
+        `;
+    });
+}
+
+function limparHistorico(){
+
+    historico = [];
+    contador = 0;
+
+    document.getElementById("contador")
+    .textContent = "0";
+
+    document.getElementById("resultado")
+    .textContent = "?";
+
+    document.getElementById("historico")
+    .innerHTML = "";
+}
+
+</script>
 
 </body>
 </html>
